@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Slides } from 'ionic-angular';
+import { LobbyPage } from '../lobby/lobby';
 
 /**
  * Generated class for the QuestionPage page.
@@ -112,6 +113,11 @@ export class QuestionPage {
     }
     else {
       //finished the text, move onto the results
+      let tests: any = JSON.parse(window.localStorage.getItem("tests")) || []; //grabs current test from localStorage and turns it into JSON string
+      this.testAnswers.createDate = new Date().toISOString();
+      tests.push(this.testAnswers);
+      window.localStorage.setItem("tests", JSON.stringify(tests));
+      this.navCtrl.setRoot(LobbyPage);
     }
     
   }
