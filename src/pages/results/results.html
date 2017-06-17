@@ -8,6 +8,9 @@
 
   <ion-navbar color="primary" text-center>
     <ion-title>Results</ion-title>
+    <button ion-button icon-only (click)="toLobby()" *ngIf="showHome">
+      <ion-icon name = "home"></ion-icon>
+    </button>
   </ion-navbar>
 
 </ion-header>

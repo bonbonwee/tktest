@@ -20,7 +20,8 @@ export class ResultsPage {
   @ViewChild('barCanvas') barCanvas;
   
   barChart : any = []; //does it matter whether this is an array or object?
-
+  showHome: boolean = false;
+  
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     
   }
@@ -28,6 +29,7 @@ export class ResultsPage {
   ionViewDidLoad() {
     console.log(this.navParams.get("test"));
     let testResults = this.navParams.get("test"); //variable stores test results as object
+    this.showHome = this.navParams.get("showHome");
     console.log('ionViewDidLoad ResultsPage');
     this.barChart = new Chart(this.barCanvas.nativeElement, {
       type: 'bar',
@@ -82,6 +84,10 @@ export class ResultsPage {
       }
     });
 
+  }
+  
+  toLobby() {
+    this.navCtrl.push(LobbyPage);
   }
 
   // modData(data) { //takes test results object and returns an array for graph

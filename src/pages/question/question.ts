@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Slides } from 'ionic-angular';
 import { LobbyPage } from '../lobby/lobby';
+import { ResultsPage } from '../results/results';
 
 /**
  * Generated class for the QuestionPage page.
@@ -78,7 +79,7 @@ export class QuestionPage {
   @ViewChild(Slides) slides: Slides;
   questions: any = [];
   testAnswers: any = {}; //keep track of answers that user picks
-
+  //name: Object[] = [{name:"Peter"}]
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     
     //reformats the apiQuestions array
@@ -90,7 +91,9 @@ export class QuestionPage {
     }
     console.log(this.questions);
   }
-
+  // foo( name: string): string{
+  //   return name
+  // }
   ionViewDidLoad() {
     console.log('ionViewDidLoad QuestionPage');
     this.slides.lockSwipes(true); //user click on card event will trigger slide
@@ -117,9 +120,11 @@ export class QuestionPage {
       this.testAnswers.createDate = new Date().toISOString();
       tests.push(this.testAnswers);
       window.localStorage.setItem("tests", JSON.stringify(tests));
-      this.navCtrl.setRoot(LobbyPage);
+      this.navCtrl.setRoot(ResultsPage, { //takes user to result page
+        test: this.testAnswers,
+        showHome: true
+      });
     }
-    
   }
-
+  
 }
