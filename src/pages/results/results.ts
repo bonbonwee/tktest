@@ -26,25 +26,26 @@ export class ResultsPage {
   }
 
   ionViewDidLoad() {
-
+    console.log(this.navParams.get("test"));
+    let testResults = this.navParams.get("test"); //variable stores test results as object
     console.log('ionViewDidLoad ResultsPage');
     this.barChart = new Chart(this.barCanvas.nativeElement, {
       type: 'bar',
       data: {
         labels: [
             'Avoiding',
-            'Accomodating',
+            'Accommodating',
             'Compromising',
             'Competing',
             'Collaborating'
           ],
         datasets: [{
           data: [
-            55,
-            70,
-            33,
-            65,
-            90
+            testResults.Avoiding/12*100,
+            testResults.Accommodating/12*100,
+            testResults.Compromising/12*100,
+            testResults.Competing/12*100,
+            testResults.Collaborating/12*100
           ],
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
@@ -82,5 +83,15 @@ export class ResultsPage {
     });
 
   }
+
+  // modData(data) { //takes test results object and returns an array for graph
+    
+  //   let resultArray = [];
+    
+  //   for (let result of data) {
+  //     resultArray.push(result);
+  //   }
+  //   return resultArray;
+  // }
 
 }
