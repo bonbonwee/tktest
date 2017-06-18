@@ -19,7 +19,7 @@ import Chart from 'chart.js';
 export class ResultsPage {
   @ViewChild('barCanvas') barCanvas;
   
-  barChart : any = []; //does it matter whether this is an array or object?
+  barChart : Object; //does it matter whether this is an array or object?
   showHome: boolean = false;
   
   constructor(public navCtrl: NavController, public navParams: NavParams) {
