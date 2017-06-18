@@ -16,12 +16,21 @@ export class AppUserProvider {
   }
   baseUrl: string = "https://bonniessf-phortonssf.c9users.io:8080/api"
   path: string = "/AppUsers"
+  pathLogin: string = "/login"
   
   register(newUserData) {
     console.log(newUserData)
     return this.http.post(
       this.baseUrl + this.path,
       newUserData
+      );
+  }
+  
+  login(userData) {
+    console.log(userData)
+    return this.http.post(
+      this.baseUrl + this.path + this.pathLogin,
+      userData
       );
   }
 
