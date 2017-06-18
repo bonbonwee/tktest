@@ -39,16 +39,15 @@ export class LoginPage {
     .map(res => res.json())
     .subscribe(res => {
       //handle successful response and decide what happens next
-      window.localStorage.setItem('token', res.token);
-      window.localStorage.setItem('userId', res.id);
+      console.log(res.token + "\n" + res.id);
+      window.localStorage.setItem("token", res.token);
+      window.localStorage.setItem("userId", res.id);
       console.log("successful login");
       this.navCtrl.setRoot(LobbyPage);
     }, err => {
       //inform user of any known problems that arose, otherwise give a generic failed message
       if(err.status == 404) {
         return alert("Page Not Found");
-      } else if (err.status == 422) {
-        return alert("422 Error");
       } else if (err.status == 403) {
         return alert("Forbidden");
       } else if (err.status == 401) {
