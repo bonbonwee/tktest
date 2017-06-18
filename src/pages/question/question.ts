@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Slides } from 'ionic-angular';
-import { LobbyPage } from '../lobby/lobby';
 import { ResultsPage } from '../results/results';
 
 /**
@@ -120,7 +119,7 @@ export class QuestionPage {
       this.testAnswers.createDate = new Date().toISOString();
       tests.push(this.testAnswers);
       window.localStorage.setItem("tests", JSON.stringify(tests));
-      this.navCtrl.setRoot(ResultsPage, { //takes user to result page
+      this.navCtrl.setRoot(ResultsPage, { //takes user to result page after answering last question
         test: this.testAnswers,
         showHome: true
       });
