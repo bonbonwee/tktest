@@ -47,7 +47,7 @@ export class RegisterPage {
       if(err.status == 404) {
         return alert("Page Not Found");
       } else if (err.status == 422) {
-        return alert("422 Error");
+        return alert("That email already exists in the database");
       } else if (err.status == 403) {
         return alert("Forbidden");
       } else if (err.status == 401) {
