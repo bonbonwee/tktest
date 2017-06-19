@@ -2,13 +2,16 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Slides } from 'ionic-angular';
 import { ResultsPage } from '../results/results';
 
+import { QuestionsProvider } from '../../providers/questions/questions';
+
 /**
  * Generated class for the QuestionPage page.
  *
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
-let apiQuestions =  [{"Question_Number":1,"Answer_ID":"A","Text":"There are times when I let others take responsibility for solving the problem.","Style":"Avoiding","id":"581283b657e0fdd11b84d32d"},
+// let apiQuestions =  [];
+                    /*[{"Question_Number":1,"Answer_ID":"A","Text":"There are times when I let others take responsibility for solving the problem.","Style":"Avoiding","id":"581283b657e0fdd11b84d32d"},
                     {"Question_Number":1,"Answer_ID":"B","Text":"Rather than negotiate the things on which we disagree, I try to stress the things upon which we both agree.","Style":"Accommodating","id":"581283b657e0fdd11b84d32e"},
                     {"Question_Number":2,"Answer_ID":"A","Text":"I try to find a compromising situation.","Style":"Compromising","id":"581283b657e0fdd11b84d32f"},
                     {"Question_Number":2,"Answer_ID":"B","Text":"I attempt to deal with all of his and my concerns.","Style":"Collaborating","id":"581283b657e0fdd11b84d330"},
@@ -67,7 +70,7 @@ let apiQuestions =  [{"Question_Number":1,"Answer_ID":"A","Text":"There are time
                     {"Question_Number":29,"Answer_ID":"A","Text":"I propose a middle ground.","Style":"Compromising","id":"581283b657e0fdd11b84d365"},
                     {"Question_Number":29,"Answer_ID":"B","Text":"I feel that differences are not always worth worrying about.","Style":"Avoiding","id":"581283b657e0fdd11b84d366"},
                     {"Question_Number":30,"Answer_ID":"A","Text":"I try not to hurt the other's feelings.","Style":"Accommodating","id":"581283b657e0fdd11b84d367"},
-                    {"Question_Number":30,"Answer_ID":"B","Text":"I always share the problem with the other person so that we can work it out.","Style":"Collaborating","id":"581283b657e0fdd11b84d368"}];
+                    {"Question_Number":30,"Answer_ID":"B","Text":"I always share the problem with the other person so that we can work it out.","Style":"Collaborating","id":"581283b657e0fdd11b84d368"}];*/
  
 @IonicPage()
 @Component({
@@ -79,16 +82,27 @@ export class QuestionPage {
   questions: any = [];
   testAnswers: any = {}; //keep track of answers that user picks
   //name: Object[] = [{name:"Peter"}]
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    
-    //reformats the apiQuestions array
-    for(let singleQuestion of apiQuestions) {
-      if(!this.questions[singleQuestion.Question_Number - 1]) {
-        this.questions[singleQuestion.Question_Number - 1] = {};
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public questionsProv: QuestionsProvider
+  ) {
+    questionsProv.getQuestions(window.localStorage.getItem("token"))
+    .map(res => res.json())
+    .subscribe(res => {
+      console.log("This is the raw response from the get request" + res);
+      let apiQuestions = res;
+      //reformats the apiQuestions array
+      for(let singleQuestion of apiQuestions) {
+        if(!this.questions[singleQuestion.Question_Number - 1]) {
+          this.questions[singleQuestion.Question_Number - 1] = {};
+        }
+          this.questions[singleQuestion.Question_Number - 1][singleQuestion.Answer_ID] = singleQuestion;
       }
-        this.questions[singleQuestion.Question_Number - 1][singleQuestion.Answer_ID] = singleQuestion;
-    }
-    console.log(this.questions);
+      console.log("The reformatted array looks like this" + this.questions);
+    }, err => {
+      alert("Warning Will Robinson!");
+    });    
   }
   // foo( name: string): string{
   //   return name
