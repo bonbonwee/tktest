@@ -33,5 +33,12 @@ export class AppUserProvider {
       userData
       );
   }
+  
+  logout(token) {
+    return this.http.post(
+      this.baseUrl + this.path + '/logout' + '?access_token=' + token,
+      {} //pass an empty object becase post method expects two parameters for this function call
+    );
+  }
 
 }
