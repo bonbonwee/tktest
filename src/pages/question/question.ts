@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, Slides } from 'ionic-angular';
 import { ResultsPage } from '../results/results';
 
 import { QuestionsProvider } from '../../providers/questions/questions';
+import { TestResultsProvider } from '../../providers/test-results/test-results';
 
 /**
  * Generated class for the QuestionPage page.
@@ -85,7 +86,8 @@ export class QuestionPage {
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    public questionsProv: QuestionsProvider
+    public questionsProv: QuestionsProvider,
+    public testResults: TestResultsProvider
   ) {
     questionsProv.getQuestions(window.localStorage.getItem("token"))
     .map(res => res.json())
@@ -129,13 +131,21 @@ export class QuestionPage {
     }
     else {
       //finished the text, move onto the results
-      let tests: any = JSON.parse(window.localStorage.getItem("tests")) || []; //grabs current test from localStorage and turns it into JSON string
+      //let tests: any = JSON.parse(window.localStorage.getItem("tests")) || []; //grabs current test from localStorage and turns it into JSON string
+      //tests.push(this.testAnswers);
+      //window.localStorage.setItem("tests", JSON.stringify(tests));
       this.testAnswers.createDate = new Date().toISOString();
-      tests.push(this.testAnswers);
-      window.localStorage.setItem("tests", JSON.stringify(tests));
-      this.navCtrl.setRoot(ResultsPage, { //takes user to result page after answering last question
-        test: this.testAnswers,
-        showHome: true
+      this.testAnswers.userId = window.localStorage.getItem("userId"); //add userId to beginning of array
+      console.log("Test Answers: " + this.testAnswers);
+      this.testResults.saveTest(this.testAnswers)
+      .map(res => res.json())
+      .subscribe(res => {
+        this.navCtrl.setRoot(ResultsPage, { //takes user to result page after answering last question
+          test: this.testAnswers,
+          showHome: true
+        });
+      }, err => {
+        alert("Test results did not get saved!");
       });
     }
   }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { ResultsPage } from '../results/results';
+import { TestResultsProvider } from '../../providers/test-results/test-results';
 
 /**
  * Generated class for the HistoryPage page.
@@ -17,13 +18,22 @@ import { ResultsPage } from '../results/results';
 export class HistoryPage {
   tests: any = [];
   
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public testResults: TestResultsProvider
+  ) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HistoryPage');
-    this.tests = JSON.parse(window.localStorage.getItem("tests")) || []; //grabs tests from local storage or creates empty array
-    console.log(this.tests);
+    //this.tests = JSON.parse(window.localStorage.getItem("tests")) || []; //grabs tests from local storage or creates empty array
+    this.testResults.getTests(window.localStorage.getItem("userId"), window.localStorage.getItem("token"))
+    .map(res => res.json())
+    .subscribe(res => {
+      this.tests = res;
+    }, err => {
+      alert("Could not retrieve tests");
+    });
   }
   
   goToResult(test) {
